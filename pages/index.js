@@ -18,21 +18,16 @@ export async function getServerSideProps(ctx) {
 }
 
 const AnimeListContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 2rem;
-  padding: 1rem 2rem;
-  text-align: center;
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;
+
 const Container = styled.div`
   background-color: #fdfdfd;
 `;
+
 export default function Home({ pageInfo, media }) {
   return (
     <Container>

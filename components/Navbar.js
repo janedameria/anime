@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 
 const Container = styled.div`
-  padding: 7px 20px;
+  padding: 0.5rem 1.1rem;
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
   position: sticky;
   top: 0;

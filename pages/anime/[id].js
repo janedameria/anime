@@ -28,18 +28,18 @@ export async function getStaticPaths() {
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100vw;
+  min-height: calc(100vh - 4rem);
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  padding: 0 1rem;
 `;
 
-const ImageContainer = styled.div`
-  width: 40%;
-  text-align: end;
-`;
+const ImageContainer = styled.div``;
 
 const SubContainer = styled.div`
-  width: 60%;
+  max-width: 40rem;
   margin-left: 2rem;
   margin-right: 2rem;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,

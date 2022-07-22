@@ -3,13 +3,11 @@ import Image from "next/dist/client/image";
 import { useRouter } from "next/router";
 
 const Container = styled.div`
-  /* background-color: ${(props) => props.inputColor || "#fafafa"}; */
   background-color: #fafafa;
-
   border-radius: 2%;
   display: flex;
-  width: 100%;
-  /* max-width: 188px; */
+  width: 11.5rem;
+  margin: 1rem 2rem;
   height: 200px;
   flex-direction: column;
   position: relative;
