@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const PageList = styled.ul`
   list-style-type: none;
@@ -7,9 +8,8 @@ const PageList = styled.ul`
   justify-content: center;
   align-items: center;
   height: 5rem;
-  margin: 3rem;
   border-radius: 0.6rem;
-  background: #ffffff;
+  background: inherit;
   box-shadow: 0 0.8rem 2rem rgba(#5a6181, 0.05);
 `;
 
@@ -32,6 +32,7 @@ const ItemList = styled.li`
 
 const Pagination = ({ pageInfo }) => {
   const { currentPage, total, lastPage } = pageInfo;
+  const router = useRouter();
   const renderPage = () => {
     if (currentPage == 1) {
       return [currentPage, currentPage + 1, currentPage + 2];
@@ -44,47 +45,45 @@ const Pagination = ({ pageInfo }) => {
   };
   const CurrentPageList = renderPage();
 
-  return (
-    <div>
-      <PageList>
-        <ItemList>
-          <span>&#60;</span>
-        </ItemList>
-        {CurrentPageList.map((item) => {
-          const isActive = currentPage == item;
+  const paginationOnClick = (item) => {
+    router.push({
+      pathname: router.pathname,
+      query: { page: item },
+    });
+  };
 
-          if (isActive) {
-            return (
-              <ItemList active key={item}>
-                <Link
-                  href={{
-                    pathname: "/",
-                    query: { page: item },
-                  }}
-                >
-                  {item}
-                </Link>
-              </ItemList>
-            );
-          }
+  return (
+    <PageList>
+      <ItemList>
+        <span>&#60;</span>
+      </ItemList>
+      {CurrentPageList.map((item) => {
+        const isActive = currentPage == item;
+
+        if (isActive) {
           return (
-            <ItemList key={item}>
-              <Link
-                href={{
-                  pathname: "/",
-                  query: { page: item },
-                }}
-              >
-                {item}
-              </Link>
+            <ItemList active key={item} onClick={() => paginationOnClick(item)}>
+              {item}
             </ItemList>
           );
-        })}
-        <ItemList>
-          <span>&#62;</span>
-        </ItemList>
-      </PageList>
-    </div>
+        }
+        return (
+          <ItemList key={item}>
+            <Link
+              href={{
+                pathname: "/",
+                query: { page: item },
+              }}
+            >
+              {item}
+            </Link>
+          </ItemList>
+        );
+      })}
+      <ItemList>
+        <span>&#62;</span>
+      </ItemList>
+    </PageList>
   );
 };
 
