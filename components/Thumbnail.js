@@ -65,20 +65,28 @@ const Thumbnail = ({ data, type }) => {
       </Container>
     );
 
-  return (
-    <Container onClick={redirectToDetailPage}>
-      <MainTitle>{data.title}</MainTitle>
-      <ImageContainer>
-        <Image
-          src={data.cover}
-          placeholder="blur"
-          blurDataURL={data.cover}
-          width={102}
-          height={129}
-        />
-      </ImageContainer>
-    </Container>
-  );
+  if (type == "collections") {
+    return (
+      <Container onClick={redirectToDetailPage}>
+        <MainTitle>{data.title}</MainTitle>
+        <ImageContainer>
+          <Image
+            src={
+              data.animeList.length > 0
+                ? data.animeList[0].coverImage.medium
+                : data.cover
+            }
+            placeholder="blur"
+            blurDataURL={data.cover}
+            width={102}
+            height={129}
+          />
+        </ImageContainer>
+      </Container>
+    );
+  }
+
+  return <></>;
 };
 
 export default Thumbnail;

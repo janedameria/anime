@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
 import SquareButton from "./SquareButton";
 
 const ModalBackground = styled.div`
@@ -28,6 +27,7 @@ const Modal = styled.div`
 
 const ModalTitle = styled.h3`
   color: #3d3e43;
+  text-align: center;
 `;
 
 const ModalContent = styled.div`
@@ -54,44 +54,44 @@ const CloseButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.span`
-  color: #d61c4e;
-  font-size: 0.9rem;
-  margin-left: 0.5rem;
-`;
-const Label = styled.label`
-  width: 20%;
+const MyButton = styled.button`
+  background-color: ${(props) => props.bgcolor && props.bgcolor};
+  color: ${(props) => props.color && props.color};
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.3rem;
+  margin: 0 0.3rem;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 `;
 
-const Input = styled.input`
-  line-height: 1.5rem;
-  padding: 0 0.4rem;
-  width: 40%;
-`;
-
-const NewCollectionModal = ({ closeModal, onSave, showErrorMessage }) => {
-  const [name, setName] = useState("");
-  const saveClicked = () => {
-    onSave(name);
-  };
-
+const ConfirmationModal = ({ title, closeModal, onYes }) => {
   return (
     <ModalBackground>
       <Modal>
-        <ModalTitle>Add New Collection</ModalTitle>
+        <ModalTitle>{title}</ModalTitle>
         <CloseButton onClick={closeModal}>X</CloseButton>
 
         <ModalContent>
-          <ModalContainer>
-            <Label>Name:</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-            {showErrorMessage && (
-              <ErrorMessage>Name must be unique and not empty.</ErrorMessage>
-            )}
-          </ModalContainer>
           <ModalContainer end>
-            <SquareButton text={"Cancel"} onClick={closeModal} />
-            <SquareButton type={"dark"} text={"Add"} onClick={saveClicked} />
+            <MyButton
+              bgcolor={"#413F42"}
+              color={"#FBFBFB"}
+              onClick={closeModal}
+            >
+              No
+            </MyButton>
+            <MyButton
+              type={"dark"}
+              bgcolor={"#FF1818"}
+              color={"#FBFBFB"}
+              onClick={onYes}
+            >
+              Yes
+            </MyButton>
           </ModalContainer>
         </ModalContent>
       </Modal>
@@ -99,4 +99,4 @@ const NewCollectionModal = ({ closeModal, onSave, showErrorMessage }) => {
   );
 };
 
-export default NewCollectionModal;
+export default ConfirmationModal;

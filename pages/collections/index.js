@@ -1,73 +1,38 @@
-import { useState, useEffect } from "react";
-import { parseCookies } from "../../helper/ParseCookies";
-import Cookie from "js-cookie";
-import { uniqueId, size } from "lodash";
+import { useState } from "react";
+import uniqid from "uniqid";
 import Head from "next/head";
 import Thumbnail from "../../components/Thumbnail";
-import NewCollectionModal from "../../components/NewCollectionModal";
+import CollectionModal from "../../components/CollectionModal";
 import CircleButton from "../../components/CircleButton";
 import { Container, FlexContainer } from "../../styles/CollectionsStyles";
+import { validateCollectionName } from "../../helper/Collections";
+import { useAppContext } from "../../context/state";
 
-export async function getServerSideProps({ req }) {
-  const cookie = parseCookies(req);
-  const collections =
-    cookie.collections != null ? JSON.parse(cookie.collections) : [];
-  return {
-    props: {
-      initialCollections: collections,
-    },
-  };
-}
-
-export default function Collections({ initialCollections }) {
+export default function Collections({}) {
+  const { collectionList, updateCollectionList } = useAppContext();
   const thumbnailType = "collections";
   const [isAddCollectionModalShow, setIsAddCollectionModalShow] =
     useState(false);
-  const [collectionList, setCollectionList] = useState(initialCollections);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-
-  useEffect(() => {
-    Cookie.set("collections", JSON.stringify(collectionList));
-  }, [collectionList, setCollectionList]);
 
   const closeModal = () => {
     setIsAddCollectionModalShow(false);
   };
 
-  const validateName = (name) => {
-    setShowErrorMessage(false);
-    if (name.length == 0) {
-      return false;
-    }
-    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    const containsSpecialChar = specialChars.test(name);
-    if (containsSpecialChar) {
-      return false;
-    }
-
-    const temp = [...collectionList, { title: name }];
-    const unique = [...new Set(temp.map((value) => value.title))];
-    if (unique.length !== temp.length) {
-      return false;
-    }
-    return true;
-  };
-
   const addNewCollection = (name) => {
     setShowErrorMessage(false);
-    if (!validateName(name)) {
+    if (!validateCollectionName(name, collectionList)) {
       return setShowErrorMessage(true);
     }
     const newCol = {
-      id: uniqueId(),
+      id: uniqid(),
       title: name,
       cover: "/no_cover.png",
       animeList: [],
     };
-    setCollectionList([...collectionList, newCol]);
+    updateCollectionList([...collectionList, newCol]);
     setIsAddCollectionModalShow(false);
   };
-
   return (
     <Container>
       <Head>
@@ -82,15 +47,17 @@ export default function Collections({ initialCollections }) {
         />
       </FlexContainer>
       <FlexContainer center>
-        {collectionList &&
+        {collectionList.length > 0 &&
           collectionList.map((value) => (
             <Thumbnail data={value} type={thumbnailType} key={value.id} />
           ))}
       </FlexContainer>
       {isAddCollectionModalShow && (
-        <NewCollectionModal
+        <CollectionModal
+          title={"Add New Collection"}
           closeModal={closeModal}
           onSave={addNewCollection}
+          yesButtonText={"Add"}
           showErrorMessage={showErrorMessage}
         />
       )}

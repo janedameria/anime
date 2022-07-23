@@ -1,5 +1,5 @@
 import client from "../../apollo-client";
-import { getAnimeListWithPagination, getAnimeById } from "../../services/Anime";
+import { getAnimeById } from "../../services/Anime";
 import Head from "next/head";
 import Image from "next/dist/client/image";
 import Checkboxes from "../../components/Checkboxes";
@@ -13,9 +13,9 @@ import {
   SubContainer,
   Paragraph,
 } from "../../styles/AnimeStyles";
+import { useAppContext } from "../../context/state";
 
-export async function getServerSideProps(ctx) {
-  const { params } = ctx;
+export async function getServerSideProps({ params }) {
   const {
     data: { Media },
   } = await client.query(getAnimeById(params.id));
@@ -27,9 +27,26 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function Anime({ anime }) {
+  const { collectionList, updateCollectionList, removeAnimeFromCollection } =
+    useAppContext();
   const renderGenres = () => {
     return anime.genres.map((value) => <GenreItem>{value}</GenreItem>);
   };
+
+  const addAnimeToCollection = (collectionId) => {
+    const temp = collectionList.map((value) => {
+      if (value.id === collectionId) {
+        value.animeList.push({
+          id: anime.id,
+          title: anime.title,
+          coverImage: anime.coverImage,
+        });
+      }
+      return value;
+    });
+    updateCollectionList(temp);
+  };
+
   return (
     <>
       <Head>
@@ -61,8 +78,17 @@ export default function Anime({ anime }) {
             {renderGenres()}
           </Paragraph>
 
-          <Paragraph>Collections: </Paragraph>
-          <Checkboxes />
+          {collectionList.length > 0 && (
+            <>
+              <Paragraph>Collections: </Paragraph>
+              <Checkboxes
+                data={collectionList}
+                animeId={anime.id}
+                addAnimeToCollection={addAnimeToCollection}
+                removeAnimeFromCollection={removeAnimeFromCollection}
+              />
+            </>
+          )}
         </SubContainer>
       </Container>
     </>

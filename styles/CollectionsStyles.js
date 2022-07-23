@@ -9,7 +9,7 @@ export const Container = styled.div`
 
 export const FlexContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: ${(props) => (props.center ? "center" : "space-between")};
   align-items: center;
-  flex-wrap: wrap;
 `;
