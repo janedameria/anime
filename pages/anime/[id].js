@@ -1,11 +1,21 @@
 import client from "../../apollo-client";
 import { getAnimeListWithPagination, getAnimeById } from "../../services/Anime";
 import Head from "next/head";
-import styled from "@emotion/styled";
 import Image from "next/dist/client/image";
 import Checkboxes from "../../components/Checkboxes";
+import {
+  Container,
+  Description,
+  GenreItem,
+  NativeTitle,
+  ImageContainer,
+  RomajiTitle,
+  SubContainer,
+  Paragraph,
+} from "../../styles/AnimeStyles";
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(ctx) {
+  const { params } = ctx;
   const {
     data: { Media },
   } = await client.query(getAnimeById(params.id));
@@ -13,74 +23,8 @@ export async function getStaticProps({ params }) {
     props: {
       anime: Media,
     },
-    revalidate: 10,
   };
 }
-
-export async function getStaticPaths() {
-  const {
-    data: { Page },
-  } = await client.query(getAnimeListWithPagination(1));
-  const paths = Page.media.map((value) => ({
-    params: { id: value.id.toString() },
-  }));
-  return { paths, fallback: "blocking" };
-}
-
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100vw;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-`;
-
-const ImageContainer = styled.div``;
-
-const SubContainer = styled.div`
-  max-width: 40rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  background-color: #fafafa;
-  padding: 1rem 2rem;
-
-  border-radius: 1%;
-`;
-
-const RomajiTitle = styled.h3`
-  text-align: center;
-`;
-
-const NativeTitle = styled.h4`
-  text-align: center;
-  margin-bottom: 1rem;
-`;
-
-const GenreItem = styled.span`
-  background-color: #3d3e43;
-  color: #fbfbfb;
-  padding: 0.2rem 0.3rem;
-  font-size: 0.8rem;
-  border-radius: 0.2rem;
-  margin: 0 0.2rem;
-`;
-
-const Description = styled.p`
-  text-align: justify;
-`;
-
-const Paragraph = styled.p`
-  font-weight: bold;
-  line-height: 2rem;
-  > * {
-    font-weight: normal;
-  }
-`;
 
 export default function Anime({ anime }) {
   const renderGenres = () => {

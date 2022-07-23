@@ -2,25 +2,11 @@ import { useState, useEffect } from "react";
 import { parseCookies } from "../../helper/ParseCookies";
 import Cookie from "js-cookie";
 import { uniqueId, size } from "lodash";
-import styled from "@emotion/styled";
 import Head from "next/head";
 import Thumbnail from "../../components/Thumbnail";
 import NewCollectionModal from "../../components/NewCollectionModal";
 import CircleButton from "../../components/CircleButton";
-
-const Container = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  padding: 3rem;
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  justify-content: ${(props) => (props.center ? "center" : "space-between")};
-  align-items: center;
-  flex-wrap: wrap;
-`;
+import { Container, FlexContainer } from "../../styles/CollectionsStyles";
 
 export async function getServerSideProps({ req }) {
   const cookie = parseCookies(req);

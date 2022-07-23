@@ -3,7 +3,7 @@ import { getAnimeListWithPagination } from "../services/Anime";
 import client from "../apollo-client";
 import Thumbnail from "../components/Thumbnail";
 import Pagination from "../components/Pagination";
-import styled from "@emotion/styled";
+import { Container, AnimeListContainer } from "../styles/HomeStyles";
 
 export async function getServerSideProps(ctx) {
   const page = ctx.query.page ? parseInt(ctx.query.page) : 1;
@@ -16,17 +16,6 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
-const AnimeListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Container = styled.div`
-  background-color: #fdfdfd;
-`;
 
 export default function Home({ pageInfo, media }) {
   const thumbnailType = "anime";
