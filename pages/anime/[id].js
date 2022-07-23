@@ -3,6 +3,7 @@ import { getAnimeListWithPagination, getAnimeById } from "../../services/Anime";
 import Head from "next/head";
 import styled from "@emotion/styled";
 import Image from "next/dist/client/image";
+import Checkboxes from "../../components/Checkboxes";
 
 export async function getStaticProps({ params }) {
   const {
@@ -30,10 +31,11 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100vw;
-  min-height: calc(100vh - 4rem);
   align-items: center;
   justify-content: space-around;
   padding: 0 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 const ImageContainer = styled.div``;
@@ -74,6 +76,7 @@ const Description = styled.p`
 
 const Paragraph = styled.p`
   font-weight: bold;
+  line-height: 2rem;
   > * {
     font-weight: normal;
   }
@@ -113,6 +116,9 @@ export default function Anime({ anime }) {
             {`Genres: `}
             {renderGenres()}
           </Paragraph>
+
+          <Paragraph>Collections: </Paragraph>
+          <Checkboxes />
         </SubContainer>
       </Container>
     </>
