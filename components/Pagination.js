@@ -31,7 +31,7 @@ const ItemList = styled.li`
 `;
 
 const Pagination = ({ pageInfo }) => {
-  const { currentPage, total, lastPage } = pageInfo;
+  const { currentPage, lastPage } = pageInfo;
   const router = useRouter();
   const renderPage = () => {
     if (currentPage == 1) {
@@ -54,7 +54,7 @@ const Pagination = ({ pageInfo }) => {
 
   return (
     <PageList>
-      <ItemList>
+      <ItemList onClick={() => paginationOnClick(currentPage - 1)}>
         <span>&#60;</span>
       </ItemList>
       {CurrentPageList.map((item) => {
@@ -80,7 +80,7 @@ const Pagination = ({ pageInfo }) => {
           </ItemList>
         );
       })}
-      <ItemList>
+      <ItemList onClick={() => paginationOnClick(currentPage + 1)}>
         <span>&#62;</span>
       </ItemList>
     </PageList>

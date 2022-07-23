@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AppWrapper } from "../context/state";
 import "../styles/globals.css";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
@@ -28,10 +29,12 @@ function Loading() {
 }
 function MyApp({ Component, pageProps }) {
   return (
-    <Layout>
-      <Loading />
-      <Component {...pageProps} />
-    </Layout>
+    <AppWrapper>
+      <Layout>
+        <Loading />
+        <Component {...pageProps} />
+      </Layout>
+    </AppWrapper>
   );
 }
 

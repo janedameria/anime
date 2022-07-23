@@ -6,12 +6,11 @@ const Container = styled.div`
   background-color: #fafafa;
   border-radius: 2%;
   display: flex;
-  width: 11.5rem;
+  width: 11.7rem;
   margin: 1rem 2rem;
-  height: 200px;
+  height: 13rem;
   flex-direction: column;
-  position: relative;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   padding-top: 10px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -27,7 +26,7 @@ const MainTitle = styled.p`
   font-weight: bold;
   text-align: center;
   font-size: 0.9em;
-  padding: 0 3px;
+  padding: 0 0.2rem;
 `;
 
 const Title = styled.p`
@@ -36,29 +35,44 @@ const Title = styled.p`
 `;
 const ImageContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 70%;
   display: flex;
-  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.3rem;
 `;
 
-const AnimeThumbnail = ({ anime }) => {
+const Thumbnail = ({ data, type }) => {
   const router = useRouter();
   const redirectToDetailPage = () => {
-    router.push(`/anime/${anime.id}`);
+    router.push(`/${type}/${data.id}`);
   };
+  if (type == "anime")
+    return (
+      <Container onClick={redirectToDetailPage}>
+        <div className="">
+          <MainTitle>{data.title.romaji}</MainTitle>
+          <Title>{`(${data.title.native})`}</Title>
+        </div>
+        <ImageContainer>
+          <Image
+            src={data.coverImage.extraLarge}
+            placeholder="blur"
+            blurDataURL={data.coverImage.medium}
+            width={102}
+            height={129}
+          />
+        </ImageContainer>
+      </Container>
+    );
 
   return (
-    <Container
-      inputColor={anime.coverImage.color}
-      onClick={redirectToDetailPage}
-    >
-      <MainTitle>{anime.title.romaji}</MainTitle>
-      <Title>{`(${anime.title.native})`}</Title>
+    <Container onClick={redirectToDetailPage}>
+      <MainTitle>{data.title}</MainTitle>
       <ImageContainer>
         <Image
-          src={anime.coverImage.extraLarge}
+          src={data.cover}
           placeholder="blur"
-          blurDataURL={anime.coverImage.medium}
+          blurDataURL={data.cover}
           width={102}
           height={129}
         />
@@ -67,4 +81,4 @@ const AnimeThumbnail = ({ anime }) => {
   );
 };
 
-export default AnimeThumbnail;
+export default Thumbnail;

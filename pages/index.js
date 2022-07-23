@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { getAnimeListWithPagination } from "../services/Anime";
 import client from "../apollo-client";
-import AnimeThumbnail from "../components/AnimeThumbnail";
+import Thumbnail from "../components/Thumbnail";
 import Pagination from "../components/Pagination";
 import styled from "@emotion/styled";
 
@@ -29,6 +29,7 @@ const Container = styled.div`
 `;
 
 export default function Home({ pageInfo, media }) {
+  const thumbnailType = "anime";
   return (
     <Container>
       <Head>
@@ -37,7 +38,7 @@ export default function Home({ pageInfo, media }) {
       </Head>
       <AnimeListContainer>
         {media.map((anime) => (
-          <AnimeThumbnail key={anime.id} anime={anime} />
+          <Thumbnail key={anime.id} data={anime} type={thumbnailType} />
         ))}
       </AnimeListContainer>
       <Pagination pageInfo={pageInfo} />
