@@ -12,6 +12,7 @@ import {
   RomajiTitle,
   SubContainer,
   Paragraph,
+  CollectionContainer,
 } from "../../styles/AnimeStyles";
 import { useAppContext } from "../../context/state";
 
@@ -82,15 +83,15 @@ export default function Anime({ anime }) {
           </Paragraph>
 
           {collectionList.length > 0 && (
-            <>
-              <Paragraph>Add Anime to Collection(s): </Paragraph>
+            <CollectionContainer>
+              <Paragraph>Collection(s): </Paragraph>
               <Checkboxes
                 data={collectionList}
                 animeId={anime.id}
                 addAnimeToCollection={addAnimeToCollection}
                 removeAnimeFromCollection={removeAnimeFromCollection}
               />
-            </>
+            </CollectionContainer>
           )}
         </SubContainer>
       </Container>

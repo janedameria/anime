@@ -14,6 +14,10 @@ export const ImageContainer = styled.div`
   padding-bottom: 1rem;
 `;
 
+export const CollectionContainer = styled.div`
+  margin: 1rem 0;
+`;
+
 export const SubContainer = styled.div`
   max-width: 40rem;
   margin-left: 2rem;
