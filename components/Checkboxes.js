@@ -48,6 +48,7 @@ const Checkboxes = ({
           <List key={value.id}>
             <InputCheckbox
               type="checkbox"
+              key={value.id}
               onChange={(e) => onChangeCheckbox(e, value.id)}
               checked={valueListInput(value.animeList)}
             />

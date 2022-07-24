@@ -30,7 +30,9 @@ export default function Anime({ anime }) {
   const { collectionList, updateCollectionList, removeAnimeFromCollection } =
     useAppContext();
   const renderGenres = () => {
-    return anime.genres.map((value) => <GenreItem>{value}</GenreItem>);
+    return anime.genres.map((value) => (
+      <GenreItem key={value}>{value}</GenreItem>
+    ));
   };
 
   const addAnimeToCollection = (collectionId) => {
@@ -60,6 +62,7 @@ export default function Anime({ anime }) {
             blurDataURL={anime.coverImage.medium}
             width={200}
             height={280}
+            alt={`image ${anime.title.romaji}`}
           />
         </ImageContainer>
 

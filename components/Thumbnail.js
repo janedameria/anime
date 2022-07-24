@@ -69,6 +69,7 @@ const Thumbnail = ({ data, type }) => {
             blurDataURL={data.coverImage.medium}
             width={102}
             height={129}
+            alt={`image ${data.title.romaji}`}
           />
         </ImageContainer>
       </Container>
