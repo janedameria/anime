@@ -7,8 +7,8 @@ const Container = styled.div`
   border-radius: 2%;
   display: flex;
   width: 11.7rem;
-  margin: 1rem 2rem;
-  height: 13rem;
+  margin: 1rem 1.5rem;
+  height: 15rem;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
@@ -46,13 +46,22 @@ const Thumbnail = ({ data, type }) => {
   const redirectToDetailPage = () => {
     router.push(`/${type}/${data.id}`);
   };
+
+  const renderAnimeTitle = () => {
+    if (data.title.romaji.length > 50) {
+      return <MainTitle>{data.title.romaji}</MainTitle>;
+    }
+    return (
+      <>
+        <MainTitle>{data.title.romaji}</MainTitle>
+        <Title>{`(${data.title.native})`}</Title>
+      </>
+    );
+  };
   if (type == "anime")
     return (
       <Container onClick={redirectToDetailPage}>
-        <div className="">
-          <MainTitle>{data.title.romaji}</MainTitle>
-          <Title>{`(${data.title.native})`}</Title>
-        </div>
+        {renderAnimeTitle()}
         <ImageContainer>
           <Image
             src={data.coverImage.extraLarge}

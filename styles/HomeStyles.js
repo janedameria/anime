@@ -9,4 +9,5 @@ export const AnimeListContainer = styled.div`
 
 export const Container = styled.div`
   background-color: #fdfdfd;
+  margin-bottom: 3rem;
 `;
