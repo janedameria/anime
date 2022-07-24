@@ -82,9 +82,10 @@ export default function Collection({ id }) {
   const renderAnimeList = () => {
     return collection.animeList.map((value) => (
       <ThumbnailContainer key={value.id}>
-        <Thumbnail data={value} type={"anime"} />
+        <Thumbnail key={value.id} data={value} type={"anime"} />
         <CircleButton
           text={"X"}
+          key={value.id}
           onClick={() =>
             showConfirmationDeletionModal(value, value.title.romaji)
           }
