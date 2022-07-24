@@ -83,7 +83,7 @@ export default function Anime({ anime }) {
 
           {collectionList.length > 0 && (
             <>
-              <Paragraph>Collections: </Paragraph>
+              <Paragraph>Add Anime to Collection(s): </Paragraph>
               <Checkboxes
                 data={collectionList}
                 animeId={anime.id}

@@ -10,7 +10,9 @@ export const Container = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-export const ImageContainer = styled.div``;
+export const ImageContainer = styled.div`
+  padding-bottom: 1rem;
+`;
 
 export const SubContainer = styled.div`
   max-width: 40rem;
