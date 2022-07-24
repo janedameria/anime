@@ -81,7 +81,7 @@ export default function Collection({ id }) {
 
   const renderAnimeList = () => {
     return collection.animeList.map((value) => (
-      <ThumbnailContainer>
+      <ThumbnailContainer key={value.id}>
         <Thumbnail data={value} type={"anime"} />
         <CircleButton
           text={"X"}
