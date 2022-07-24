@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { AppWrapper } from "../context/state";
 import "../styles/globals.css";
 import { useRouter } from "next/router";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Loader from "../components/Loader";
 
 function Loading() {
