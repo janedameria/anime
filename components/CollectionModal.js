@@ -54,7 +54,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.span`
+const ErrorMessage = styled.p`
   color: #d61c4e;
   font-size: 0.9rem;
   margin-left: 0.5rem;
@@ -92,10 +92,18 @@ const CollectionModal = ({
           <ModalContainer>
             <Label>Name:</Label>
             <Input value={name} onChange={(e) => setName(e.target.value)} />
-            {showErrorMessage && (
-              <ErrorMessage>Name must be unique and not empty.</ErrorMessage>
-            )}
           </ModalContainer>
+          {showErrorMessage && (
+            <ModalContainer>
+              <ErrorMessage>
+                Name must be:
+                <br />
+                1. Unique. <br />
+                2. Not empty <br />
+                3. Can't contain any special character
+              </ErrorMessage>
+            </ModalContainer>
+          )}
           <ModalContainer end>
             <SquareButton text={"Cancel"} onClick={closeModal} />
             <SquareButton

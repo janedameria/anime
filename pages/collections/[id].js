@@ -85,6 +85,7 @@ export default function Collection({ id }) {
         <Thumbnail key={value.id} data={value} type={"anime"} />
         <CircleButton
           text={"X"}
+          color={"RED"}
           key={value.id}
           onClick={() =>
             showConfirmationDeletionModal(value, value.title.romaji)

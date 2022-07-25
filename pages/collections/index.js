@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Thumbnail from "../../components/Thumbnail";
+import { FiEdit2 } from "react-icons/fi";
 import CollectionModal from "../../components/CollectionModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CircleButton from "../../components/CircleButton";
@@ -8,6 +9,7 @@ import {
   Container,
   FlexContainer,
   ThumbnailContainer,
+  ButtonContainer,
 } from "../../styles/CollectionsStyles";
 import { validateCollectionName } from "../../helper/Collections";
 import { useAppContext } from "../../context/state";
@@ -23,9 +25,9 @@ export default function Collections({}) {
   const [isConfirmationRemoveModalShow, setIsConfirmationRemoveModalShow] =
     useState(false);
   const [toBeDeletedCollection, setToBeDeletedCollection] = useState({});
-  const closeModal = () => {
-    setIsAddCollectionModalShow(false);
-  };
+  const [toBeEditedCollection, setToBeEditedCollection] = useState({});
+  const [isEditCollectionModalShow, setIsEditCollectionModalShow] =
+    useState(false);
 
   const createNewCollection = (name) => {
     setShowErrorMessage(false);
@@ -41,6 +43,11 @@ export default function Collections({}) {
     setIsConfirmationRemoveModalShow(true);
   };
 
+  const showEditCollectionModal = (collection) => {
+    setToBeEditedCollection(collection);
+    setIsEditCollectionModalShow(true);
+  };
+
   const deleteCollection = () => {
     const modifiedCollectionList = collectionList.filter(
       (value) => value.id != toBeDeletedCollection.id
@@ -48,6 +55,22 @@ export default function Collections({}) {
     updateCollectionList(modifiedCollectionList);
     setToBeDeletedCollection({});
     setIsConfirmationRemoveModalShow(false);
+  };
+
+  const updateName = (newName) => {
+    setShowErrorMessage(false);
+    if (!validateCollectionName(newName, collectionList)) {
+      return setShowErrorMessage(true);
+    }
+    const modifiedList = collectionList.map((value) => {
+      if (value.id == toBeEditedCollection.id) {
+        value.title = newName;
+      }
+      return value;
+    });
+    updateCollectionList(modifiedList);
+    setToBeEditedCollection({});
+    setIsEditCollectionModalShow(false);
   };
   return (
     <Container>
@@ -67,24 +90,41 @@ export default function Collections({}) {
           collectionList.map((value) => (
             <ThumbnailContainer>
               <Thumbnail data={value} type={thumbnailType} key={value.id} />
-              <CircleButton
-                text={"X"}
-                key={value.id}
-                onClick={() => showConfirmationDeletionModal(value)}
-              />
+              <ButtonContainer>
+                <CircleButton
+                  color={"RED"}
+                  text={"X"}
+                  key={`Delete ${value.id}`}
+                  onClick={() => showConfirmationDeletionModal(value)}
+                />
+                <CircleButton
+                  text={<FiEdit2 />}
+                  key={`Edit ${value.id}`}
+                  onClick={() => showEditCollectionModal(value)}
+                />
+              </ButtonContainer>
             </ThumbnailContainer>
           ))}
       </FlexContainer>
       {isAddCollectionModalShow && (
         <CollectionModal
           title={"Add New Collection"}
-          closeModal={closeModal}
+          closeModal={() => setIsAddCollectionModalShow(false)}
           onSave={createNewCollection}
           yesButtonText={"Add"}
           showErrorMessage={showErrorMessage}
         />
       )}
-
+      {isEditCollectionModalShow && (
+        <CollectionModal
+          title={"Edit Collection Name"}
+          closeModal={() => setIsEditCollectionModalShow(false)}
+          onSave={updateName}
+          initialName={toBeEditedCollection.title}
+          showErrorMessage={showErrorMessage}
+          yesButtonText={"Edit"}
+        />
+      )}
       {isConfirmationRemoveModalShow && (
         <ConfirmationModal
           title={`Delete ${toBeDeletedCollection.title} collection?`}

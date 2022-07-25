@@ -20,3 +20,9 @@ export const ThumbnailContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  width: 50%;
+  justify-content: space-around;
+`;
