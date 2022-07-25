@@ -1,5 +1,4 @@
 import { useState } from "react";
-import uniqid from "uniqid";
 import Head from "next/head";
 import Thumbnail from "../../components/Thumbnail";
 import CollectionModal from "../../components/CollectionModal";
@@ -9,7 +8,7 @@ import { validateCollectionName } from "../../helper/Collections";
 import { useAppContext } from "../../context/state";
 
 export default function Collections({}) {
-  const { collectionList, updateCollectionList } = useAppContext();
+  const { collectionList, addNewCollection } = useAppContext();
   const thumbnailType = "collections";
   const [isAddCollectionModalShow, setIsAddCollectionModalShow] =
     useState(false);
@@ -19,18 +18,12 @@ export default function Collections({}) {
     setIsAddCollectionModalShow(false);
   };
 
-  const addNewCollection = (name) => {
+  const createNewCollection = (name) => {
     setShowErrorMessage(false);
     if (!validateCollectionName(name, collectionList)) {
       return setShowErrorMessage(true);
     }
-    const newCol = {
-      id: uniqid(),
-      title: name,
-      cover: "/no_cover.png",
-      animeList: [],
-    };
-    updateCollectionList([...collectionList, newCol]);
+    addNewCollection(name);
     setIsAddCollectionModalShow(false);
   };
   return (
@@ -56,7 +49,7 @@ export default function Collections({}) {
         <CollectionModal
           title={"Add New Collection"}
           closeModal={closeModal}
-          onSave={addNewCollection}
+          onSave={createNewCollection}
           yesButtonText={"Add"}
           showErrorMessage={showErrorMessage}
         />

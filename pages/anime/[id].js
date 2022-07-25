@@ -1,8 +1,12 @@
+import { useState } from "react";
 import client from "../../apollo-client";
 import { getAnimeById } from "../../services/Anime";
 import Head from "next/head";
 import Image from "next/dist/client/image";
 import Checkboxes from "../../components/Checkboxes";
+import CircleButton from "../../components/CircleButton";
+import { validateCollectionName } from "../../helper/Collections";
+import CollectionModal from "../../components/CollectionModal";
 import {
   Container,
   Description,
@@ -28,8 +32,15 @@ export async function getServerSideProps({ params }) {
 }
 
 export default function Anime({ anime }) {
-  const { collectionList, updateCollectionList, removeAnimeFromCollection } =
-    useAppContext();
+  const {
+    collectionList,
+    updateCollectionList,
+    removeAnimeFromCollection,
+    addNewCollection,
+  } = useAppContext();
+  const [addCollectionModal, setAddCollectionModal] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+
   const renderGenres = () => {
     return anime.genres.map((value) => (
       <GenreItem key={value}>{value}</GenreItem>
@@ -49,7 +60,14 @@ export default function Anime({ anime }) {
     });
     updateCollectionList(temp);
   };
-
+  const createNewCollection = (name) => {
+    setShowErrorMessage(false);
+    if (!validateCollectionName(name, collectionList)) {
+      return setShowErrorMessage(true);
+    }
+    addNewCollection(name);
+    setAddCollectionModal(false);
+  };
   return (
     <>
       <Head>
@@ -82,18 +100,32 @@ export default function Anime({ anime }) {
             {renderGenres()}
           </Paragraph>
 
-          {collectionList.length > 0 && (
-            <CollectionContainer>
-              <Paragraph>Collection(s): </Paragraph>
+          <CollectionContainer>
+            <Paragraph>Collection(s): </Paragraph>
+            {collectionList.length > 0 ? (
               <Checkboxes
                 data={collectionList}
                 animeId={anime.id}
                 addAnimeToCollection={addAnimeToCollection}
                 removeAnimeFromCollection={removeAnimeFromCollection}
               />
-            </CollectionContainer>
-          )}
+            ) : (
+              <CircleButton
+                text={"+ New Collection"}
+                onClick={() => setAddCollectionModal(true)}
+              />
+            )}
+          </CollectionContainer>
         </SubContainer>
+        {addCollectionModal && (
+          <CollectionModal
+            title={"Add New Collection"}
+            closeModal={() => setAddCollectionModal(false)}
+            onSave={createNewCollection}
+            yesButtonText={"Add"}
+            showErrorMessage={showErrorMessage}
+          />
+        )}
       </Container>
     </>
   );

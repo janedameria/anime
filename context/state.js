@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import uniqid from "uniqid";
 import Cookie from "js-cookie";
 
 const AppContext = createContext();
@@ -17,6 +18,15 @@ export function AppWrapper({ children }) {
     setCollectionList(newList);
     Cookie.set("collections", JSON.stringify(newList));
   };
+  const addNewCollection = (name) => {
+    const newCol = {
+      id: uniqid(),
+      title: name,
+      cover: "/no_cover.png",
+      animeList: [],
+    };
+    updateCollectionList([...collectionList, newCol]);
+  };
 
   const removeAnimeFromCollection = (collectionId, animeId) => {
     const temp = collectionList.map((value) => {
@@ -34,6 +44,7 @@ export function AppWrapper({ children }) {
     collectionList,
     updateCollectionList,
     removeAnimeFromCollection,
+    addNewCollection,
   };
 
   return (

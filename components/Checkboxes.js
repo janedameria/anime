@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 import { find } from "lodash";
 
@@ -18,13 +19,20 @@ const List = styled.li`
 const InputCheckbox = styled.input`
   margin-right: 0.3rem;
 `;
-
+const Label = styled.label`
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    opacity: 0.9;
+  }
+`;
 const Checkboxes = ({
   data,
   addAnimeToCollection,
   animeId,
   removeAnimeFromCollection,
 }) => {
+  const router = useRouter();
   const onChangeCheckbox = (e, id) => {
     if (e.target.checked) {
       return addAnimeToCollection(id);
@@ -52,7 +60,9 @@ const Checkboxes = ({
               onChange={(e) => onChangeCheckbox(e, value.id)}
               checked={valueListInput(value.animeList)}
             />
-            {value.title}
+            <Label onClick={() => router.push(`/collections/${value.id}`)}>
+              {value.title}
+            </Label>
           </List>
         ))}
     </UL>
