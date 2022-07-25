@@ -2,18 +2,27 @@ import { useState } from "react";
 import Head from "next/head";
 import Thumbnail from "../../components/Thumbnail";
 import CollectionModal from "../../components/CollectionModal";
+import ConfirmationModal from "../../components/ConfirmationModal";
 import CircleButton from "../../components/CircleButton";
-import { Container, FlexContainer } from "../../styles/CollectionsStyles";
+import {
+  Container,
+  FlexContainer,
+  ThumbnailContainer,
+} from "../../styles/CollectionsStyles";
 import { validateCollectionName } from "../../helper/Collections";
 import { useAppContext } from "../../context/state";
 
 export default function Collections({}) {
-  const { collectionList, addNewCollection } = useAppContext();
+  const { collectionList, addNewCollection, updateCollectionList } =
+    useAppContext();
   const thumbnailType = "collections";
   const [isAddCollectionModalShow, setIsAddCollectionModalShow] =
     useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-
+  useState(false);
+  const [isConfirmationRemoveModalShow, setIsConfirmationRemoveModalShow] =
+    useState(false);
+  const [toBeDeletedCollection, setToBeDeletedCollection] = useState({});
   const closeModal = () => {
     setIsAddCollectionModalShow(false);
   };
@@ -25,6 +34,20 @@ export default function Collections({}) {
     }
     addNewCollection(name);
     setIsAddCollectionModalShow(false);
+  };
+
+  const showConfirmationDeletionModal = (collection) => {
+    setToBeDeletedCollection(collection);
+    setIsConfirmationRemoveModalShow(true);
+  };
+
+  const deleteCollection = () => {
+    const modifiedCollectionList = collectionList.filter(
+      (value) => value.id != toBeDeletedCollection.id
+    );
+    updateCollectionList(modifiedCollectionList);
+    setToBeDeletedCollection({});
+    setIsConfirmationRemoveModalShow(false);
   };
   return (
     <Container>
@@ -42,7 +65,14 @@ export default function Collections({}) {
       <FlexContainer center>
         {collectionList.length > 0 &&
           collectionList.map((value) => (
-            <Thumbnail data={value} type={thumbnailType} key={value.id} />
+            <ThumbnailContainer>
+              <Thumbnail data={value} type={thumbnailType} key={value.id} />
+              <CircleButton
+                text={"X"}
+                key={value.id}
+                onClick={() => showConfirmationDeletionModal(value)}
+              />
+            </ThumbnailContainer>
           ))}
       </FlexContainer>
       {isAddCollectionModalShow && (
@@ -52,6 +82,14 @@ export default function Collections({}) {
           onSave={createNewCollection}
           yesButtonText={"Add"}
           showErrorMessage={showErrorMessage}
+        />
+      )}
+
+      {isConfirmationRemoveModalShow && (
+        <ConfirmationModal
+          title={`Delete ${toBeDeletedCollection.title} collection?`}
+          closeModal={() => setIsConfirmationRemoveModalShow(false)}
+          onYes={deleteCollection}
         />
       )}
     </Container>

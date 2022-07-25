@@ -13,3 +13,10 @@ export const FlexContainer = styled.div`
   justify-content: ${(props) => (props.center ? "center" : "space-between")};
   align-items: center;
 `;
+
+export const ThumbnailContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
