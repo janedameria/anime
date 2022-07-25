@@ -88,7 +88,7 @@ export default function Collections({}) {
       <FlexContainer center>
         {collectionList.length > 0 &&
           collectionList.map((value) => (
-            <ThumbnailContainer>
+            <ThumbnailContainer key={value.id}>
               <Thumbnail data={value} type={thumbnailType} key={value.id} />
               <ButtonContainer>
                 <CircleButton

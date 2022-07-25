@@ -100,7 +100,7 @@ const CollectionModal = ({
                 <br />
                 1. Unique. <br />
                 2. Not empty <br />
-                3. Can't contain any special character
+                3. Can&apos;t contain any special character
               </ErrorMessage>
             </ModalContainer>
           )}
